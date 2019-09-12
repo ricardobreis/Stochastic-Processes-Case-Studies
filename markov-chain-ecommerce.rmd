@@ -1,0 +1,146 @@
+---
+title: 'Cadeias de Markov de Tempo Discreto (DTMC: Discrete Time Markov Chain)'
+output:
+  html_document: default
+  html_notebook: default
+---
+
+```{r}
+# Limpando o console.
+cat("\014") 
+# Limpando o Global Environment.
+rm(list = ls())
+```
+
+# Carregando o pacote markovchain.
+
+```{r}
+#install.packages("markovchain")
+library(markovchain)
+```
+
+# Para o caso de transição de canais de um e-commerce.
+
+Definindo a matriz de transição.
+
+```{r}
+tm <- matrix(c(0.00,0.10,0.10,0.20, 0.60,
+               0.15,0.00,0.05,0.35, 0.45,
+               0.20,0.10,0.00,0.13, 0.57,
+               0.00,0.00,0.00,1.00, 0.00,
+               0.00,0.00,0.00,0.00, 1.00),
+              nrow = 5,
+              byrow = TRUE) 
+tm
+```
+
+Criando a DTMC.
+
+```{r}
+dtmc <- new("markovchain",transitionMatrix=tm,
+states=c("Site","Hotpage", "Call Center","Venda","Saida"),
+name="MarkovChain para o e-commerce") 
+dtmc
+```
+
+Caso 1: Iniciando pelo site
+
+```{r}
+initialState<-c(1,0,0,0,0)
+steps<-1
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(1,0,0,0,0)
+steps<-2
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(1,0,0,0,0)
+steps<-3
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(1,0,0,0,0)
+steps<-1000
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+Caso 2: Iniciando pela hotpage
+
+```{r}
+initialState<-c(0,1,0,0,0)
+steps<-1
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,1,0,0,0)
+steps<-2
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,1,0,0,0)
+steps<-3
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,1,0,0,0)
+steps<-1000
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+Caso 3: Iniciando pelo call center
+
+```{r}
+initialState<-c(0,0,1,0,0)
+steps<-1
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,0,1,0,0)
+steps<-2
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,0,1,0,0)
+steps<-3
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+```{r}
+initialState<-c(0,0,1,0,0)
+steps<-1000
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
+Estima-se o estado assintótico para uma determinada distribuição de probabilidade de início.
+
+Caso 50% dos clientes sejam "originados" por procura orgânica no Site, 20% pela Hotpage e 30% pelo Call Center.
+
+```{r}
+initialState<-c(0.50,0.20,0.30,0.00,0.00)
+steps<-1000
+finalState<-initialState*(dtmc^steps) #using power operator
+finalState
+```
+
